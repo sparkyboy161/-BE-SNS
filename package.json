@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "express-validator": "^6.6.1",
+    "expressjs": "^1.0.1",
+    "firebase": "^7.24.0",
+    "firebase-tools": "^8.13.1"
+  }
+}
