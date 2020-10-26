@@ -64,8 +64,8 @@ module.exports.uploadImage = function (req, res) {
         },
       })
       .then(() => {
-        const imageURL = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
-        return db.doc(`/users/${req.user.handle}`).update({ imageURL });
+        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+        return db.doc(`/users/${req.user.handle}`).update({ imageUrl });
       })
       .then(() => {
         return res.json({ message: "Image Upload Successfully" });
