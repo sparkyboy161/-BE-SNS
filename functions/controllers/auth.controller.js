@@ -4,7 +4,7 @@ const {
   validateSignupData,
   validateLoginData,
 } = require("../utils/validators");
-const config = require('../utils/config');
+const config = require("../utils/config");
 
 module.exports.signup = function (req, res) {
   const newUser = {
@@ -14,7 +14,7 @@ module.exports.signup = function (req, res) {
     handle: req.body.handle,
   };
 
-  const noImg = 'no-img.png'
+  const noImg = "no-img.png";
 
   const { valid, errors } = validateSignupData(newUser);
 
@@ -26,8 +26,7 @@ module.exports.signup = function (req, res) {
     .get()
     .then((doc) => {
       if (doc.exists) {
-        throw 'exist-handle';
-        
+        throw "exist-handle";
       } else {
         return firebase
           .auth()
@@ -54,13 +53,15 @@ module.exports.signup = function (req, res) {
     })
     .catch((err) => {
       console.error(err);
-      if(err === 'exist-handle'){
+      if (err === "exist-handle") {
         return res.status(400).json({ handle: "this handle is already taken" });
       }
       if (err.code === "auth/email-already-in-use") {
         return res.status(400).json({ email: "Email is already in use" });
       } else {
-        return res.status(500).json({ error: err.code });
+        return res
+          .status(500)
+          .json({ general: "Something went wrong, please try again" });
       }
     });
 };
@@ -88,12 +89,8 @@ module.exports.login = function (req, res) {
     })
     .catch((err) => {
       console.error(err);
-      if (err.code === "auth/wrong-password") {
-        return res
-          .status(403)
-          .json({ general: "Wrong credentials, please try again" });
-      } else {
-        return res.status(500).json({ error: err.code });
-      }
+      return res
+        .status(403)
+        .json({ general: "Wrong credentials, please try again" });
     });
 };
