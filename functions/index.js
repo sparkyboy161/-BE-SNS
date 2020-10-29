@@ -91,7 +91,7 @@ exports.createNotificationOnComment = functions
 
 exports.onUserImageChange = functions
   .region("asia-southeast2")
-  .firestore.document(`/users/{userId}`)
+  .firestore.document("/users/{userId}")
   .onUpdate((change) => {
     if (change.before.data().imageUrl !== change.after.data().imageUrl) {
       const batch = db.batch();
@@ -102,7 +102,7 @@ exports.onUserImageChange = functions
         .then((data) => {
           data.forEach((doc) => {
             const scream = db.doc(`/screams/${doc.id}`);
-            batch.update(scream, { userImage: change.after.data().imageURL });
+            batch.update(scream, { userImage: change.after.data().imageUrl });
           });
           return batch.commit();
         });
@@ -111,7 +111,7 @@ exports.onUserImageChange = functions
 
 exports.onScreamDelete = functions
   .region("asia-southeast2")
-  .firestore.document(`/screams/{screamId}`)
+  .firestore.document("screams/{screamId}")
   .onDelete((snapshot, context) => {
     const screamId = context.params.screamId;
     const batch = db.batch();
@@ -140,7 +140,5 @@ exports.onScreamDelete = functions
         });
         return batch.commit();
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((err) => console.error(err));
   });
